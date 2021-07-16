@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>PICKING</title>
+</head>
+<body>
+	<h1>Product create page</h1>
+	<form th:action="@{/create}" method="post" th:object="${product}">
+		<labeL for="name">型番</labeL>
+		<input type="text" th:field="*{name}">
+		<p th:errors="*{name}"></p>
+		<button type="submit">追加</button>
+	</form>
+</body>
+</html>

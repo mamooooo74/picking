@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<link th:href="@{/css/style.css}" rel="stylesheet">
+<meta charset="UTF-8">
+<title>PICKING</title>
+</head>
+<body>
+	<h1>Product index page</h1>
+	<table>
+		<tr>
+			<th>ID</th>
+			<th>製品名</th>
+		</tr>
+		<tr th:each="item : ${product}">
+			<td th:text="${item.id}"></td>
+			<td th:text="${item.name}"></td>
+		</tr>
+	</table>
+	<a  th:href="@{/create}">追加</a>
+</body>
+</html>
