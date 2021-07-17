@@ -45,15 +45,22 @@ public class ProductController {
 	}
 
 	@GetMapping("senior")
-	public String getSenior(@RequestParam(value = "count", defaultValue = "1") String countStr,Model model) {
-		int count = Integer.parseInt(countStr);
+	public String getSenior(@RequestParam(value = "count", defaultValue = "1") int count,
+							@RequestParam(value = "stratTime", defaultValue = "") Long start,
+							Model model) {
+		if(start == null) {
+			start = System.currentTimeMillis();
+		}
 		if(count == 25) {
+			int time = (int)(System.currentTimeMillis() - start) / 1000;
+			int sec = time % 60;
+			int min = time / 60;
+			String timeStr = min + "分" + sec + "秒";
+
+			model.addAttribute("time",timeStr);
 			return "product/complete";
 		}
 		count++;
-
-
-
 		List<Product> products = repository.findAll();
 		Collections.shuffle(products);
 		products = products.subList(0, 6);
@@ -67,6 +74,7 @@ public class ProductController {
 		for(int i = 0; i < 6; i++) {
 			productMap.put(products.get(i),random.get(i)) ;
 		}
+		model.addAttribute("start", start);
 		model.addAttribute("count",count);
 		model.addAttribute("productsMap", productMap );
 		model.addAttribute("sum", sum );
