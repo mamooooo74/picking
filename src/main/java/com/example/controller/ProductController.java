@@ -13,6 +13,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.modl.Product;
 import com.example.repository.ProductRepository;
@@ -44,7 +45,15 @@ public class ProductController {
 	}
 
 	@GetMapping("senior")
-	public String getSenior(Model model) {
+	public String getSenior(@RequestParam(value = "count", defaultValue = "1") String countStr,Model model) {
+		int count = Integer.parseInt(countStr);
+		if(count == 25) {
+			return "product/complete";
+		}
+		count++;
+
+
+
 		List<Product> products = repository.findAll();
 		Collections.shuffle(products);
 		products = products.subList(0, 6);
@@ -54,14 +63,18 @@ public class ProductController {
 			sum += i;
 		}
 		Map<Product, Integer> productMap = new HashMap<>();
+
 		for(int i = 0; i < 6; i++) {
 			productMap.put(products.get(i),random.get(i)) ;
 		}
+		model.addAttribute("count",count);
 		model.addAttribute("productsMap", productMap );
 		model.addAttribute("sum", sum );
 		return "product/senior";
 
 	}
+
+
 
 
 

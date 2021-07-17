@@ -7,6 +7,7 @@
 </head>
 <body>
 	<h1>Senior</h1>
+	<h2>注文表[[${count - 1}]]</h2>
 	<table>
 		<tr>
 			<th>製品名</th>
@@ -23,6 +24,7 @@
 	</table>
 	<form th:action="@{/senior}" method="get">
 		<button type="submit">次へ</button>
+		<input type="hidden" name="count" th:value="${count}">
 	</form>
 	<!-- <a th:href="@{/senior}">次へ</a> -->
 </body>
