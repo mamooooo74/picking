@@ -25,10 +25,19 @@ import lombok.RequiredArgsConstructor;
 public class ProductController {
 	private final ProductRepository repository;
 
+	private List<Map<Product, Integer>> keepProductsMap;
+
+
 	@GetMapping("/")
-	public String getProductHome(Model model) {
+	public String getTop() {
+		return "index";
+	}
+
+
+	@GetMapping("/list")
+	public String getProductList(Model model) {
 		model.addAttribute("product", repository.findAll());
-		return "product/index";
+		return "product/list";
 	}
 	@GetMapping("/create")
 	public String getCreateProduct(@ModelAttribute Product product) {
@@ -44,10 +53,14 @@ public class ProductController {
 		return "redirect:/";
 	}
 
-	@GetMapping("senior")
+	@GetMapping("/senior")
 	public String getSenior(@RequestParam(value = "count", defaultValue = "1") int count,
 							@RequestParam(value = "stratTime", defaultValue = "") Long start,
 							Model model) {
+		if(keepProductsMap == null) {
+			keepProductsMap = new ArrayList<>();
+		}
+
 		if(start == null) {
 			start = System.currentTimeMillis();
 		}
@@ -57,7 +70,11 @@ public class ProductController {
 			int min = time / 60;
 			String timeStr = min + "分" + sec + "秒";
 
+
+
+			model.addAttribute("keepProductMap",keepProductsMap);
 			model.addAttribute("time",timeStr);
+			keepProductsMap = null;
 			return "product/complete";
 		}
 		count++;
@@ -74,6 +91,7 @@ public class ProductController {
 		for(int i = 0; i < 6; i++) {
 			productMap.put(products.get(i),random.get(i)) ;
 		}
+		keepProductsMap.add(productMap);
 		model.addAttribute("start", start);
 		model.addAttribute("count",count);
 		model.addAttribute("productsMap", productMap );

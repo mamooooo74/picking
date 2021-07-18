@@ -1,11 +1,38 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+<link th:href="@{/css/style.css}" rel="stylesheet">
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
 <body>
 	complete
 	<p th:text="${time}"></p>
+	<th:block th:each="productsMap : ${keepProductMap}">
+		<table>
+		<tr>
+			<th>製品名</th>
+			<th>個数</th>
+		</tr>
+		<tr th:each="item : ${productsMap}">
+			<td th:text="${item.key.name}"></td>
+			<td th:text=${item.value}></td>
+		</tr>
+		<tr>
+			<th>合計</th>
+
+		</tr>
+		<br>
+	</table>
+
+
+
+
+	</th:block>
+
+
+
+
+	<a th:href="@{/}">TOP PAGE</a>
 </body>
 </html>
