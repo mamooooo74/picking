@@ -26,6 +26,7 @@ public class ProductController {
 	private final ProductRepository repository;
 
 	private List<Map<Product, Integer>> keepProductsMap;
+	int count = 0;
 
 
 	@GetMapping("/")
@@ -50,13 +51,13 @@ public class ProductController {
 			return "product/create";
 		}
 		repository.save(product);
-		return "redirect:/";
+		return "redirect:/list";
 	}
 
 	@GetMapping("/senior")
-	public String getSenior(@RequestParam(value = "count", defaultValue = "1") int count,
-							@RequestParam(value = "stratTime", defaultValue = "") Long start,
+	public String getSenior(@RequestParam(value = "stratTime", defaultValue = "") Long start,
 							Model model) {
+		count++;
 		if(keepProductsMap == null) {
 			keepProductsMap = new ArrayList<>();
 		}
@@ -69,15 +70,12 @@ public class ProductController {
 			int sec = time % 60;
 			int min = time / 60;
 			String timeStr = min + "分" + sec + "秒";
-
-
-
 			model.addAttribute("keepProductMap",keepProductsMap);
 			model.addAttribute("time",timeStr);
 			keepProductsMap = null;
+			count = 0;
 			return "product/complete";
 		}
-		count++;
 		List<Product> products = repository.findAll();
 		Collections.shuffle(products);
 		products = products.subList(0, 6);

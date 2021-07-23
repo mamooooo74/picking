@@ -8,31 +8,24 @@
 <body>
 	complete
 	<p th:text="${time}"></p>
-	<th:block th:each="productsMap : ${keepProductMap}">
+	<th:block th:each="productsMap, stat : ${keepProductMap}">
+		<h2>注文表[[${stat.count}]]</h2>
 		<table>
-		<tr>
-			<th>製品名</th>
-			<th>個数</th>
-		</tr>
-		<tr th:each="item : ${productsMap}">
-			<td th:text="${item.key.name}"></td>
-			<td th:text=${item.value}></td>
-		</tr>
-		<tr>
-			<th>合計</th>
-
-		</tr>
-		<br>
-	</table>
-
-
-
+			<tr>
+				<th>製品名</th>
+				<th>個数</th>
+			</tr>
+			<tr th:each="item : ${productsMap}">
+				<td th:text="${item.key.name}"></td>
+				<td th:text=${item.value}></td>
+			</tr>
+			<tr>
+				<th>合計</th>
+				<th></th>
+			</tr>
+		</table>
 
 	</th:block>
-
-
-
-
 	<a th:href="@{/}">TOP PAGE</a>
 </body>
 </html>
