@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -13,7 +14,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.modl.Product;
 import com.example.repository.ProductRepository;
@@ -21,20 +21,20 @@ import com.example.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 
 @Controller
+@Scope("session")
 @RequiredArgsConstructor
 public class ProductController {
 	private final ProductRepository repository;
 
 	private List<Map<Product, Integer>> keepProductsMap;
 	int count = 0;
+	Long start = null;
 
 
 	@GetMapping("/")
 	public String getTop() {
 		return "index";
 	}
-
-
 	@GetMapping("/list")
 	public String getProductList(Model model) {
 		model.addAttribute("product", repository.findAll());
@@ -54,55 +54,54 @@ public class ProductController {
 		return "redirect:/list";
 	}
 
-	@GetMapping("/senior")
-	public String getSenior(@RequestParam(value = "stratTime", defaultValue = "") Long start,
-							Model model) {
-		count++;
-		if(keepProductsMap == null) {
-			keepProductsMap = new ArrayList<>();
-		}
+	@GetMapping("/comp")
+	public  String getComplete(Model model) {
 
-		if(start == null) {
+		model.addAttribute("keepProductMap",keepProductsMap);
+		model.addAttribute("time",getElapsedTime());
+		return "product/complete";
+	}
+
+	@GetMapping("/senior")
+	public String getSenior(Model model) {
+		if(count == 0) {
+			keepProductsMap = new ArrayList<>();;
 			start = System.currentTimeMillis();
 		}
-		if(count == 25) {
-			int time = (int)(System.currentTimeMillis() - start) / 1000;
-			int sec = time % 60;
-			int min = time / 60;
-			String timeStr = min + "分" + sec + "秒";
-			model.addAttribute("keepProductMap",keepProductsMap);
-			model.addAttribute("time",timeStr);
-			keepProductsMap = null;
+		if(count == 24) {
 			count = 0;
-			return "product/complete";
+			return "redirect:/comp";
 		}
+		List<Integer> random = randomnNumbers();
+		Map<Product, Integer> productMap = getProductsMap(random);
+		keepProductsMap.add(productMap);
+		model.addAttribute("start", start);
+		model.addAttribute("count",++count);
+		model.addAttribute("productsMap", productMap );
+		model.addAttribute("sum", random.stream().reduce(0, Integer::sum));
+		return "product/senior";
+	}
+
+	private String getElapsedTime() {
+		int time = (int)(System.currentTimeMillis() - start) / 1000;
+		int sec = time % 60;
+		int min = time / 60;
+		return min + "分" + sec + "秒";
+	}
+
+	private Map<Product, Integer> getProductsMap(List<Integer> random){
+		Map<Product, Integer> productMap = new HashMap<>();
 		List<Product> products = repository.findAll();
 		Collections.shuffle(products);
 		products = products.subList(0, 6);
-		List<Integer> random = randomnumbers();
-		int sum = 0;
-		for(int i : random) {
-			sum += i;
-		}
-		Map<Product, Integer> productMap = new HashMap<>();
-
 		for(int i = 0; i < 6; i++) {
 			productMap.put(products.get(i),random.get(i)) ;
 		}
-		keepProductsMap.add(productMap);
-		model.addAttribute("start", start);
-		model.addAttribute("count",count);
-		model.addAttribute("productsMap", productMap );
-		model.addAttribute("sum", sum );
-		return "product/senior";
-
+		return productMap;
 	}
 
 
-
-
-
-	private List<Integer> randomnumbers(){
+	private List<Integer> randomnNumbers(){
 		List<Integer> result = new ArrayList<>();
 		for(int i = 0; i < 20; i++) {
 			if(i == 0) {
