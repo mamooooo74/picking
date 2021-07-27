@@ -26,7 +26,7 @@ public class DataLoader implements CommandLineRunner {
 			repository.save(product);
 		}
 	}
-	
+
 	private List<String> getNameList(){
 		List<String> nameList = new ArrayList<String>();
 		nameList.add("S1977-1987688");
