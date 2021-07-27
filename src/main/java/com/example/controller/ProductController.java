@@ -35,15 +35,18 @@ public class ProductController {
 	public String getTop() {
 		return "index";
 	}
+
 	@GetMapping("/list")
 	public String getProductList(Model model) {
 		model.addAttribute("product", repository.findAll());
 		return "product/list";
 	}
+
 	@GetMapping("/create")
 	public String getCreateProduct(@ModelAttribute Product product) {
 		return "product/create";
 	}
+
 	@PostMapping("/create")
 	public String addProduct(@Validated @ModelAttribute Product product,
 			BindingResult result, Model model) {
@@ -56,7 +59,7 @@ public class ProductController {
 
 	@GetMapping("/comp")
 	public  String getComplete(Model model) {
-
+		model.addAttribute("sumList", getSumList());
 		model.addAttribute("keepProductMap",keepProductsMap);
 		model.addAttribute("time",getElapsedTime());
 		return "product/complete";
@@ -113,5 +116,17 @@ public class ProductController {
 		Collections.shuffle(result);
 		result = result.subList(0, 6);
 		return result;
+	}
+
+	private List<Integer> getSumList() {
+		List<Integer> sumList = new ArrayList<>();
+		for(Map<Product, Integer> productMap : keepProductsMap) {
+			int sum = 0;
+			 for(int i : productMap.values()) {
+				 sum += i;
+			 }
+			 sumList.add(sum);
+		}
+		return sumList;
 	}
 }
