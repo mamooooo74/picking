@@ -75,7 +75,7 @@ public class ProductController {
 		List<Integer> random = randomnNumbers();
 		Map<Product, Integer> productMap = getProductsMap(random);
 		keepProductsMap.add(productMap);
-		model.addAttribute("start", start);
+
 		model.addAttribute("count",++count);
 		model.addAttribute("productsMap", productMap );
 		model.addAttribute("sum", random.stream().reduce(0, Integer::sum));
@@ -91,9 +91,7 @@ public class ProductController {
 
 	private Map<Product, Integer> getProductsMap(List<Integer> random){
 		Map<Product, Integer> productMap = new HashMap<>();
-		List<Product> products = repository.findAll();
-		Collections.shuffle(products);
-		products = products.subList(0, 6);
+		List<Product> products = repository.getRandomSix();
 		for(int i = 0; i < 6; i++) {
 			productMap.put(products.get(i),random.get(i)) ;
 		}
