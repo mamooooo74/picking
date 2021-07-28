@@ -16,7 +16,7 @@
 				<th>個数</th>
 			</tr>
 			<tr th:each="item : ${productsMap}">
-				<td th:text="${item.key.name}"></td>
+				<td th:text="${item.key.name}" th:class="${colorList[item.key.color]}"></td>
 				<td th:text=${item.value}></td>
 			</tr>
 			<tr>

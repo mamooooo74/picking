@@ -6,7 +6,7 @@
 <title>PICKING</title>
 </head>
 <body>
-	<h1>上級者</h1>
+	<h1>中級者</h1>
 	<h2>注文表[[${count}]]</h2>
 	<table>
 		<tr>
@@ -14,7 +14,7 @@
 			<th>個数</th>
 		</tr>
 		<tr th:each="item : ${productsMap}">
-			<td th:text="${item.key.name}"></td>
+			<td th:text="${item.key.name}" th:class="${colorList[item.key.color]}"></td>
 			<td th:text=${item.value}></td>
 		</tr>
 		<tr>
@@ -25,6 +25,6 @@
 	<!-- <form th:action="@{/senior}" method="get">
 		<button type="submit">次へ</button>
 	</form> -->
-	<a th:href="@{/senior}">次へ</a>
+	<a th:href="@{/middle}">次へ</a>
 </body>
 </html>

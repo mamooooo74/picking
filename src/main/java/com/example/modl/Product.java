@@ -18,4 +18,5 @@ public class Product {
 	@NotBlank
 	private String name;
 
+	private Integer color;
 }

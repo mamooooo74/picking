@@ -59,6 +59,7 @@ public class ProductController {
 
 	@GetMapping("/comp")
 	public  String getComplete(Model model) {
+		model.addAttribute("colorList", getClolorList());
 		model.addAttribute("sumList", getSumList());
 		model.addAttribute("keepProductMap",keepProductsMap);
 		model.addAttribute("time",getElapsedTime());
@@ -83,6 +84,26 @@ public class ProductController {
 		model.addAttribute("productsMap", productMap );
 		model.addAttribute("sum", random.stream().reduce(0, Integer::sum));
 		return "product/senior";
+	}
+
+	@GetMapping("/middle")
+	public String getMiddle(Model model) {
+		if(count == 0) {
+			keepProductsMap = new ArrayList<>();;
+			start = System.currentTimeMillis();
+		}
+		if(count == 24) {
+			count = 0;
+			return "redirect:/comp";
+		}
+		List<Integer> random = randomnNumbers();
+		Map<Product, Integer> productMap = getProductsMap(random);
+		keepProductsMap.add(productMap);
+		model.addAttribute("colorList", getClolorList());
+		model.addAttribute("count",++count);
+		model.addAttribute("productsMap", productMap );
+		model.addAttribute("sum", random.stream().reduce(0, Integer::sum));
+		return "product/middle";
 	}
 
 	private String getElapsedTime() {
@@ -128,5 +149,14 @@ public class ProductController {
 			 sumList.add(sum);
 		}
 		return sumList;
+	}
+
+	private List<String> getClolorList(){
+		List<String> colorList = new ArrayList<String>();
+		colorList.add("yellow");
+		colorList.add("blue");
+		colorList.add("pink");
+		colorList.add("green");
+		return colorList;
 	}
 }
