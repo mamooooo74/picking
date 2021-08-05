@@ -105,6 +105,25 @@ public class ProductController {
 		model.addAttribute("sum", random.stream().reduce(0, Integer::sum));
 		return "product/middle";
 	}
+	@GetMapping("/beginner")
+	public String getbeginner(Model model) {
+		if(count == 0) {
+			keepProductsMap = new ArrayList<>();;
+			start = System.currentTimeMillis();
+		}
+		if(count == 24) {
+			count = 0;
+			return "redirect:/comp";
+		}
+		List<Integer> random = randomnNumbers();
+		Map<Product, Integer> productMap = getProductsMap(random);
+		keepProductsMap.add(productMap);
+		model.addAttribute("colorList", getClolorList());
+		model.addAttribute("count",++count);
+		model.addAttribute("productsMap", productMap );
+		model.addAttribute("sum", random.stream().reduce(0, Integer::sum));
+		return "product/beginner";
+	}
 
 	private String getElapsedTime() {
 		int time = (int)(System.currentTimeMillis() - start) / 1000;

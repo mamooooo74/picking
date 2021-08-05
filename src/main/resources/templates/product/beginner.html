@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<link th:href="@{/css/style.css}" rel="stylesheet">
+<meta charset="UTF-8">
+<title>PICKING</title>
+</head>
+<body>
+	<h1>初心者</h1>
+	<h2>注文表[[${count}]]</h2>
+	<table>
+		<tr>
+			<th></th>
+			<th>製品名</th>
+			<th>個数</th>
+		</tr>
+		<tr th:each="item : ${productsMap}">
+			<td><img th:src="@{/image/{item}.png (item=${item.key.name})}" width="60" height="60"></td>
+			<td th:text="${item.key.name}" th:class="${colorList[item.key.color]}"></td>
+			<td th:text=${item.value}></td>
+		</tr>
+		<tr>
+			<th></th>
+			<th>合計</th>
+			<th th:text="${sum}"></th>
+		</tr>
+	</table>
+	<!-- <form th:action="@{/senior}" method="get">
+		<button type="submit">次へ</button>
+	</form> -->
+	<a th:href="@{/beginner}">次へ</a>
+</body>
+</html>
