@@ -6,7 +6,7 @@ import java.util.Map;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import com.example.modl.Product;
+import com.example.model.Product;
 import com.example.repository.ProductRepository;
 
 import lombok.RequiredArgsConstructor;

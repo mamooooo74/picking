@@ -9,13 +9,9 @@ import java.util.Map;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
 
-import com.example.modl.Product;
+import com.example.model.Product;
 import com.example.repository.ProductRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -36,27 +32,7 @@ public class ProductController {
 		return "index";
 	}
 
-	@GetMapping("/list")
-	public String getProductList(Model model) {
-		model.addAttribute("product", repository.findAll());
-		return "product/list";
-	}
-
-	@GetMapping("/create")
-	public String getCreateProduct(@ModelAttribute Product product) {
-		return "product/create";
-	}
-
-	@PostMapping("/create")
-	public String addProduct(@Validated @ModelAttribute Product product,
-			BindingResult result, Model model) {
-		if(result.hasErrors()) {
-			return "product/create";
-		}
-		repository.save(product);
-		return "redirect:/list";
-	}
-
+	
 	@GetMapping("/comp")
 	public  String getComplete(Model model) {
 		model.addAttribute("colorList", getClolorList());
