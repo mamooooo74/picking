@@ -11,20 +11,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import com.example.model.DataLoader;
 import com.example.model.Product;
-import com.example.repository.ProductRepository;
-
-import lombok.RequiredArgsConstructor;
 
 @Controller
 @Scope("session")
-@RequiredArgsConstructor
 public class ProductController {
-	private final ProductRepository repository;
 
-	private List<Map<Product, Integer>> keepProductsMap;
-	int count = 0;
-	Long start = null;
+	private DataLoader loader = new DataLoader();
+	private List<Map<Product, Integer>>keepProductsMap;
+	private int count = 0;
+	private Long start = null;
 
 
 	@GetMapping("/")
@@ -32,7 +29,7 @@ public class ProductController {
 		return "index";
 	}
 
-	
+
 	@GetMapping("/comp")
 	public  String getComplete(Model model) {
 		model.addAttribute("colorList", getClolorList());
@@ -110,7 +107,7 @@ public class ProductController {
 
 	private Map<Product, Integer> getProductsMap(List<Integer> random){
 		Map<Product, Integer> productMap = new HashMap<>();
-		List<Product> products = repository.getRandomSix();
+		List<Product> products = loader.GetRandomsix();
 		for(int i = 0; i < 6; i++) {
 			productMap.put(products.get(i),random.get(i)) ;
 		}

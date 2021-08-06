@@ -1,21 +1,16 @@
 package com.example.model;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.validation.constraints.NotBlank;
-
 import lombok.Getter;
 import lombok.Setter;
-
 @Getter
 @Setter
-@Entity
 public class Product {
-	@Id
-	@GeneratedValue
-	private Long id;
-	@NotBlank
+
+
+	public Product(String name, Integer color) {
+		this.name = name;
+		this.color = color;
+	}
+
 	private String name;
 
 	private Integer color;
