@@ -2,29 +2,38 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <link th:href="@{/css/style.css}" rel="stylesheet">
+<link rel="stylesheet"
+  th:href="@{/webjars/bootstrap/4.1.1/css/bootstrap.min.css}" />
+<script th:src="@{/webjars/jquery/3.3.1/jquery.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/4.1.1/js/bootstrap.min.js}"></script>
 <meta charset="UTF-8">
 <title>PICKING</title>
 </head>
 <body>
-	<h1>中級者</h1>
-	<h2>注文表[[${count}]]</h2>
-	<table>
-		<tr>
-			<th>製品名</th>
-			<th>個数</th>
-		</tr>
-		<tr th:each="item : ${productsMap}">
-			<td th:text="${item.key.name}" th:class="${colorList[item.key.color]}"></td>
-			<td th:text=${item.value}></td>
-		</tr>
-		<tr>
-			<th>合計</th>
-			<th th:text="${sum}"></th>
-		</tr>
-	</table>
+	<h2 class="mx-auto center">注文表[[${count}]]</h2>
+	<div class="container">
+		<div class="table-responsive">
+			<table class="table table-bordered">
+				<tr>
+					<th>製品名</th>
+					<th>個数</th>
+				</tr>
+				<tr th:each="item : ${productsMap}">
+					<td th:text="${item.key.name}" th:class="${colorList[item.key.color]}"></td>
+					<td th:text=${item.value}></td>
+				</tr>
+				<tr>
+					<th>合計</th>
+					<th th:text="${sum}"></th>
+				</tr>
+			</table>
+		</div>
+	</div>
 	<!-- <form th:action="@{/senior}" method="get">
 		<button type="submit">次へ</button>
 	</form> -->
-	<a th:href="@{/middle}">次へ</a>
+	<div class="mx-auto center">
+		<a th:href="@{/middle}">次へ</a>
+	</div>
 </body>
 </html>
