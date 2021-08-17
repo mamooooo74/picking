@@ -18,7 +18,7 @@ import com.example.model.Product;
 @Scope("session")
 public class ProductController {
 
-	private DataLoader loader = new DataLoader();
+	private DataLoader loader = DataLoader.getInstance();
 	private List<Map<Product, Integer>>keepProductsMap;
 	private int count = 0;
 	private Long start = null;

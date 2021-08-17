@@ -8,6 +8,12 @@ import java.util.List;
 
 
 public class DataLoader{
+	private static DataLoader loader = new DataLoader();
+	private DataLoader() {
+	}
+	public static DataLoader getInstance() {
+		return loader;
+	}
 
 	public List<Product> GetRandomsix() {
 
