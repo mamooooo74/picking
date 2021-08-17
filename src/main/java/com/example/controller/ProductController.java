@@ -23,12 +23,11 @@ public class ProductController {
 	private int count = 0;
 	private Long start = null;
 
-
 	@GetMapping("/")
 	public String getTop() {
+		count = 0;
 		return "index";
 	}
-
 
 	@GetMapping("/comp")
 	public  String getComplete(Model model) {
@@ -41,53 +40,35 @@ public class ProductController {
 
 	@GetMapping("/senior")
 	public String getSenior(Model model) {
-		if(count == 0) {
-			keepProductsMap = new ArrayList<>();;
-			start = System.currentTimeMillis();
-		}
-		if(count == 24) {
-			count = 0;
-			return "redirect:/comp";
-		}
-		List<Integer> random = randomnNumbers();
-		Map<Product, Integer> productMap = getProductsMap(random);
-		keepProductsMap.add(productMap);
-
-		model.addAttribute("count",++count);
-		model.addAttribute("productsMap", productMap );
-		model.addAttribute("sum", random.stream().reduce(0, Integer::sum));
-		return "product/senior";
+		return nextPage(model, "senior");
 	}
 
 	@GetMapping("/middle")
 	public String getMiddle(Model model) {
-		if(count == 0) {
-			keepProductsMap = new ArrayList<>();;
-			start = System.currentTimeMillis();
-		}
-		if(count == 24) {
-			count = 0;
-			return "redirect:/comp";
-		}
-		List<Integer> random = randomnNumbers();
-		Map<Product, Integer> productMap = getProductsMap(random);
-		keepProductsMap.add(productMap);
-		model.addAttribute("colorList", getClolorList());
-		model.addAttribute("count",++count);
-		model.addAttribute("productsMap", productMap );
-		model.addAttribute("sum", random.stream().reduce(0, Integer::sum));
-		return "product/middle";
+
+		return nextPage(model, "middle");
 	}
 	@GetMapping("/beginner")
 	public String getbeginner(Model model) {
-		if(count == 0) {
-			keepProductsMap = new ArrayList<>();;
-			start = System.currentTimeMillis();
-		}
+		return nextPage(model, "beginner");
+	}
+
+
+	private String nextPage(Model model, String page) {
 		if(count == 24) {
 			count = 0;
 			return "redirect:/comp";
 		}
+		if(count == 0) {
+			keepProductsMap = new ArrayList<>();;
+			start = System.currentTimeMillis();
+		}
+			setModel(model);
+			return "product/" + page;
+	}
+
+
+	private void setModel(Model model) {
 		List<Integer> random = randomnNumbers();
 		Map<Product, Integer> productMap = getProductsMap(random);
 		keepProductsMap.add(productMap);
@@ -95,7 +76,6 @@ public class ProductController {
 		model.addAttribute("count",++count);
 		model.addAttribute("productsMap", productMap );
 		model.addAttribute("sum", random.stream().reduce(0, Integer::sum));
-		return "product/beginner";
 	}
 
 	private String getElapsedTime() {
