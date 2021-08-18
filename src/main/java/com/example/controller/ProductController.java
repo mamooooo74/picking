@@ -1,8 +1,6 @@
 package com.example.controller;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -48,11 +46,11 @@ public class ProductController {
 
 		return nextPage(model, "middle");
 	}
+
 	@GetMapping("/beginner")
 	public String getbeginner(Model model) {
 		return nextPage(model, "beginner");
 	}
-
 
 	private String nextPage(Model model, String page) {
 		if(count == 24) {
@@ -67,10 +65,9 @@ public class ProductController {
 			return "product/" + page;
 	}
 
-
 	private void setModel(Model model) {
-		List<Integer> random = randomnNumbers();
-		Map<Product, Integer> productMap = getProductsMap(random);
+		List<Integer> random = loader.randomnNumbers();
+		Map<Product, Integer> productMap = loader.getProductsMap(random);
 		keepProductsMap.add(productMap);
 		model.addAttribute("colorList", getClolorList());
 		model.addAttribute("count",++count);
@@ -85,31 +82,6 @@ public class ProductController {
 		return min + "分" + sec + "秒";
 	}
 
-	private Map<Product, Integer> getProductsMap(List<Integer> random){
-		Map<Product, Integer> productMap = new HashMap<>();
-		List<Product> products = loader.GetRandomsix();
-		for(int i = 0; i < 6; i++) {
-			productMap.put(products.get(i),random.get(i)) ;
-		}
-		return productMap;
-	}
-
-
-	private List<Integer> randomnNumbers(){
-		List<Integer> result = new ArrayList<>();
-		for(int i = 0; i < 20; i++) {
-			if(i == 0) {
-				result.add(3);
-			}else if(i < 5) {
-				result.add(2);
-			}else {
-				result.add(1);
-			}
-		}
-		Collections.shuffle(result);
-		result = result.subList(0, 6);
-		return result;
-	}
 
 	private List<Integer> getSumList() {
 		List<Integer> sumList = new ArrayList<>();

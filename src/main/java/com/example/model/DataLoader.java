@@ -2,13 +2,16 @@ package com.example.model;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 
 
 public class DataLoader{
 	private static DataLoader loader = new DataLoader();
+	
 	private DataLoader() {
 	}
 	public static DataLoader getInstance() {
@@ -16,16 +19,39 @@ public class DataLoader{
 	}
 
 	public List<Product> GetRandomsix() {
-
-
 		List<Product> producttList  = getProductList();
 		Collections.shuffle(producttList);
-//		producttList.subList(0, 5);
+		producttList = producttList.subList(0, 6);
+
 		return producttList;
+	}
+	public Map<Product, Integer> getProductsMap(List<Integer> random){
+		Map<Product, Integer> productMap = new HashMap<>();
+		List<Product> products = GetRandomsix();
+		for(int i = 0; i < 6; i++) {
+			productMap.put(products.get(i),random.get(i)) ;
+		}
+		return productMap;
 	}
 
 
-
+	public List<Integer> randomnNumbers(){
+		List<Integer> result = new ArrayList<>();
+		for(int i = 0; i < 20; i++) {
+			if(i == 0) {
+				result.add(3);
+			}else if(i < 5) {
+				result.add(2);
+			}else {
+				result.add(1);
+			}
+		}
+		Collections.shuffle(result);
+		result = result.subList(0, 6);
+		return result;
+	}
+	
+	
 	private List<Product> getProductList(){
 		List<Product> productList = new ArrayList<Product>();
 		productList.add(new Product("S1977-1987688",0));
